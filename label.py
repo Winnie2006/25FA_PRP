@@ -65,8 +65,14 @@ class DicomViewer:
         dicoms = []
         for subdir, dirs, files in os.walk(folder_path):
             for filename in files:
-                if filename.lower().endswith(".dcm"):
-                    dicoms.append(os.path.join(subdir, filename))
+                # if filename.lower().endswith(".dcm"):
+                #     dicoms.append(os.path.join(subdir, filename))
+                filepath = os.path.join(subdir, filename)
+                try:
+                    ds = pydicom.dcmread(filepath, stop_before_pixels=True)
+                    dicoms.append(filepath)
+                except:
+                    continue
         return dicoms
 
     def load_dicom_image(self, path):
